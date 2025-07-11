@@ -1,0 +1,133 @@
+---
+alwaysApply: true
+---
+
+# Thông tin dự án React
+
+## Tổng quan
+- Dự án: Ứng dụng React với cấu trúc Frontend/Backend
+- Framework: React + Vite
+- Routing: React Router DOM
+- API: theo tài liệu https://supabase.com/docs/reference/javascript/typescript-support
+- CSS: Tailwind CSS + CSS modules cho từng trang
+
+## Quy tắc cấu trúc thư mục
+
+### Cấu trúc thư mục chính
+```
+src/
+├── components/           # Thư mục chứa components
+│   ├── layout/           # Layout chung cho toàn bộ ứng dụng
+│   └── pages/            # Các trang của ứng dụng
+│       ├── home/         # Trang chủ
+│       ├── user/         # Quản lý user
+│       └── [module]/     # Module khác (nếu có)
+├── backend/              # Chứa các hàm gọi API
+│   ├── user.js           # API cho user
+│   └── [module].js       # API cho module khác
+├── assets/               # Chứa hình ảnh, icon, font...
+├── css/                  # Chứa các file CSS
+│   ├── [page-name].css   # CSS riêng cho từng trang
+│   └── index.js          # File tự động import tất cả CSS
+├── App.jsx               # Component App chính
+├── main.jsx              # Entry point
+└── App.css               # Global CSS
+```
+
+### Quy tắc đặt tên file và thư mục
+1. **Pages**: Mỗi trang được đặt trong một thư mục riêng theo chức năng
+   - Ví dụ: `src/components/pages/user/list.jsx`, `src/components/pages/user/detail.jsx`
+
+2. **Backend API**: Mỗi module có file API riêng
+   - Ví dụ: `src/backend/user.js`, `src/backend/product.js`
+
+3. **CSS Files**: Mỗi trang có một file CSS riêng trong thư mục `src/css/`
+   - Ví dụ: `src/css/home.css`, `src/css/user-list.css`
+   - Tên file CSS nên tương ứng với tên trang, sử dụng kebab-case
+
+4. **Quy ước đặt tên**:
+   - Components: PascalCase (VD: `UserDetail.jsx`)
+   - File JS thông thường: camelCase (VD: `userApi.js`)
+   - File CSS: kebab-case (VD: `user-detail.css`)
+   - Thư mục: lowercase (VD: `user`, `product`)
+
+### Cách thêm tính năng mới
+1. **Thêm module mới**:
+   - Tạo thư mục mới trong `src/components/pages/[tên-module]/`
+   - Tạo file API trong `src/backend/[tên-module].js`
+   - Tạo file CSS trong `src/css/[tên-module].css`
+
+2. **Thêm trang mới cho module hiện có**:
+   - Tạo file mới trong thư mục module tương ứng: `src/components/pages/[module]/[trang].jsx`
+   - Tạo file CSS tương ứng: `src/css/[module]-[trang].css`
+   - Thêm route trong `App.jsx`
+
+3. **Thêm component dùng chung**:
+   - Tạo component trong thư mục phù hợp theo chức năng
+
+4. **Thêm API mới**:
+   - Nếu thuộc module hiện có: Thêm hàm vào file API hiện có
+   - Nếu là module mới: Tạo file API mới `src/backend/[tên-module].js`
+
+### Quy tắc CSS
+1. **Sử dụng Tailwind CSS**:
+   - Ưu tiên sử dụng các class của Tailwind CSS cho styling
+   - Chỉ sử dụng CSS thuần khi cần tùy chỉnh đặc biệt không có trong Tailwind
+
+2. **CSS riêng cho từng trang**:
+   - Mỗi trang cần có một file CSS riêng trong thư mục `src/css/`
+   - Tên file CSS nên tương ứng với tên trang, ví dụ: `home.css`, `user-list.css`
+   - Các file CSS sẽ được tự động import vào ứng dụng thông qua cơ chế glob import
+
+3. **Phạm vi CSS**:
+   - Sử dụng class prefix để tránh xung đột, ví dụ: `.home-container`, `.user-list-table`
+   - Hoặc sử dụng cú pháp module CSS nếu cần thiết
+
+### Cấu trúc một trang tiêu chuẩn
+```jsx
+import { useState, useEffect } from 'react';
+import { apiFunction } from '../../../backend/[module]';
+// CSS sẽ được tự động import qua cơ chế glob import
+
+const PageName = () => {
+    // State và logic
+    
+    // Effects
+    
+    // Event handlers
+    
+    return (
+        <div className="page-name-container">
+            <h1 className="text-2xl font-bold mb-4">Page Title</h1>
+            {/* Nội dung trang sử dụng Tailwind CSS */}
+        </div>
+    );
+};
+
+export default PageName;
+```
+
+### Layout chung
+Tất cả các trang đều sử dụng layout chung từ `src/components/layout/layout.jsx`, chỉ thay đổi nội dung trong layout.
+Nếu có layout riêng cho module, tạo layout riêng trong `src/components/layout/[module].jsx`
+
+
+
+## Tương tác với Database
+- Khi có yêu cầu lấy thông tin từ database, ứng dụng sẽ sử dụng thư viện `supabase-js` client để truy vấn.
+- Toàn bộ các hàm backend API tương tác với database phải tuân thủ 100% tài liệu chính thức của Supabase: [Supabase JavaScript Client Reference](https://supabase.com/docs/reference/javascript/typescript-support).
+
+
+## Yêu cầu về Ghi log (Logging)
+### Ghi log hành động của người dùng
+- Ứng dụng phải có cơ chế ghi log để lưu lại các hành động của người dùng.
+- Toàn bộ log được lưu tại logs/actions.md
+- Mỗi bản ghi log cần bao gồm:
+    - Hành động đã thực hiện (ví dụ: "tạo trang chủ", "thêm button", "xoá trang", "thay đổi nội dung trang").
+    - Dấu thời gian (timestamp) ghi nhận thời điểm hành động diễn ra.
+    - Thông tin về người dùng thực hiện hành động (nếu có).
+
+
+## Các tools được sử dụng
+- supabase: Truy vấn thông tin trong cơ sở dữ liệu, dùng để xem/sửa/xoá dữ liệu theo yêu cầu của người dùng
+- playwright: Mở trình duyệt và chiếu preview cho user nếu được yêu cầu

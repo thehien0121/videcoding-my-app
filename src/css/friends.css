@@ -1,0 +1,4 @@
+.friends-container { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.friends-tab-btn { padding: 0.5rem 1.2rem; border-radius: 6px; font-weight: 500; transition: background 0.2s; }
+.friends-list, .friends-requests, .friends-search { min-height: 120px; }
+.friends-search-input { width: 220px; }

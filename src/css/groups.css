@@ -1,0 +1,7 @@
+/* CSS riêng cho module nhóm, ưu tiên dùng Tailwind nhưng có thể custom nếu cần */
+.groups-card {
+  transition: box-shadow 0.2s;
+}
+.groups-card:hover {
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.08);
+}
